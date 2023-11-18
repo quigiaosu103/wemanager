@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search"
+        android:title="Search"
+        android:icon="@drawable/search_icon"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/add"
+        android:title="New"
+        android:icon="@drawable/add_icon"
+        app:showAsAction="always"
+        />
+
+
+
+
+    <item
+        android:id="@+id/sortByName"
+        android:title="Sort By Name"
+        />
+    <item
+        android:id="@+id/sortId"
+        android:title="Sort By Student Id"/>
+
+
+    <item
+        android:id="@+id/sortByDe"
+        android:title="Sort By Deparments"
+        />
+    <item
+        android:id="@+id/removeMany"
+        android:title="Delete Students"
+
+        />
+    <item
+        android:title="Exit"
+        android:id="@+id/exit"/>
+
+
+</menu>

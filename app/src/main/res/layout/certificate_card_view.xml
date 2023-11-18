@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:textAlignment="textEnd"
+        android:padding="10dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_icon"
+                />
+            <ImageButton
+                android:id="@+id/btnRemove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/remove_icon"
+                />
+        </LinearLayout>
+        <EditText
+            android:layout_width="match_parent"
+            android:background="#fff"
+            android:id="@+id/txtName"
+            android:layout_height="62dp"
+            android:editable="false"
+            android:text="Certificate name"
+            android:textAlignment="center"
+            android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/txtContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Content"
+            android:background="#fff"
+            android:editable="false"
+            />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtDate"
+            android:text="10/10/2023"
+            android:background="#fff"
+            android:editable="false"
+            />
+        <EditText
+            android:id="@+id/txtSigner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Signer name"
+            android:textAlignment="textEnd"
+            android:background="#fff"
+            />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
