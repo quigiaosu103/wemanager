@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView android:layout_width="match_parent"
-    android:layout_height="60dp"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="10dp"
+
+    android:background="@drawable/corner_shadow"
+    android:layout_margin="6dp"
+    android:translationZ="8dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="4dp"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:padding="10dp"
+
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="30dp"
+
+            android:layout_width="60dp"
             android:layout_height="60dp"
             android:src="@drawable/user_icon"
+            android:layout_marginRight="12dp"
             />
        <LinearLayout
            android:orientation="vertical"
@@ -20,19 +33,26 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:id="@+id/txtName"
-               android:text="Name"
+               android:text="Vo Nguyen Phu Qui"
+                android:textStyle="bold"
+               android:textColor="#4FB0F7"
+               android:textSize="16dp"
 
                ></TextView>
            <TextView
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:text="ID"
+               android:text="52100996"
+               android:textColor="#4FB0F7"
+               android:textSize="12dp"
                android:id="@+id/txtId"/>
 
            <TextView
-               android:text="Deparment"
+               android:text="Infomation Technology"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               android:textSize="12dp"
+               android:textColor="#4FB0F7"
                android:id="@+id/txtDeparment" />
        </LinearLayout>
     </LinearLayout>

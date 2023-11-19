@@ -15,7 +15,6 @@
         android:layout_height="60dp"
         android:outlineAmbientShadowColor="#ccc"
         app:titleTextColor="#4FB0F7"
-        android:tooltipText=""
         xmlns:android="http://schemas.android.com/apk/res/android" >
 
     </androidx.appcompat.widget.Toolbar>
@@ -30,18 +29,34 @@
         tools:listitem="@layout/student_short_card"
         />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:paddingLeft="68dp"
+        android:paddingRight="68dp"
 
         >
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="dassd"/>
+       <ImageButton
+           android:id="@+id/btnHome"
+           android:layout_width="44dp"
+           android:layout_height="44dp"
+           android:background="@drawable/baseline_home_24"
+           app:layout_constraintLeft_toLeftOf="parent"
+           app:layout_constraintTop_toTopOf="parent"
+           app:layout_constraintBottom_toBottomOf="parent"
+           />
 
-    </LinearLayout>
+
+
+        <ImageButton
+            android:id="@+id/btnInfo"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/user_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

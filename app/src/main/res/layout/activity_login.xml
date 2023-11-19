@@ -4,13 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingRight="32dp"
+    android:paddingLeft="32dp"
+    android:gravity="center"
     tools:context=".Login">
+    <ImageView
+        android:layout_marginTop="-100dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/addlisticon" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LOGIN"
+        android:textColor="#4FB0F7"
+        android:textStyle="bold"
+        android:textSize="28dp"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"/>
+    <EditText
+        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_edittext"
+        android:id="@+id/inputUserName"
+        android:hint="Enter your user name"
+        android:paddingLeft="10dp"
+        android:textColor="#7A7A7A"
+        />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#F2F2F7"
+        android:id="@+id/inputPassword"
+        android:hint="Enter your user password"
+        android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:layout_marginTop="24dp"
+        android:textColor="#7A7A7A"
+        />
+
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
         android:id="@+id/submit"
+        android:backgroundTint="#4FB0F7"
+        android:layout_marginTop="40dp"
+
+
         />
 
 </LinearLayout>

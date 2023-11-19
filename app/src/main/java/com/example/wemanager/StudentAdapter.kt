@@ -4,9 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class StudentAdapter(val mList: ArrayList<Student>): RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
+class StudentAdapter(var mList: ArrayList<Student>): RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
+   public var isSelecting = false
+    public var removeIdList = ArrayList<String>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentAdapter.ViewHolder {
         var view = LayoutInflater.from(parent.context).inflate(R.layout.student_short_card, parent, false)
         return ViewHolder(view)
@@ -17,6 +20,19 @@ class StudentAdapter(val mList: ArrayList<Student>): RecyclerView.Adapter<Studen
         holder.txtName.text = item.FullName
         holder.txtId.text = item.Id
         holder.txtDeparment.text = item.Deparment
+        holder.itemView.alpha = 1.0.toFloat()
+        holder.itemView.setOnClickListener{
+            v->
+            if(isSelecting == true) {
+                if(v.alpha.toString() == "0.6") {
+                    v.alpha = 1.0.toFloat()
+                    removeIdList.remove(item.Id)
+                }else {
+                    v.alpha = 0.6.toFloat()
+                    removeIdList.add(item.Id)
+                }
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -28,10 +44,17 @@ class StudentAdapter(val mList: ArrayList<Student>): RecyclerView.Adapter<Studen
         notifyDataSetChanged()
     }
 
-    fun addItem(item: Student){
-        mList.add(item)
+
+    fun removeSelected() {
+        mList = ArrayList(mList.filterIndexed{
+                index, itemModel->
+                !removeIdList.contains(itemModel.Id)
+        })
+        removeIdList.clear()
         notifyDataSetChanged()
     }
+
+
 
 
 

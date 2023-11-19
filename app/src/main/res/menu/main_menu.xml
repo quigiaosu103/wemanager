@@ -6,15 +6,14 @@
         android:id="@+id/search"
         android:title="Search"
         android:icon="@drawable/search_icon"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
     <item
         android:id="@+id/add"
         android:title="New"
         android:icon="@drawable/add_icon"
         app:showAsAction="always"
         />
-
-
 
 
     <item
@@ -24,7 +23,9 @@
     <item
         android:id="@+id/sortId"
         android:title="Sort By Student Id"/>
-
+    <item
+        android:id="@+id/sortAge"
+        android:title="Sort By Student Age"/>
 
     <item
         android:id="@+id/sortByDe"
@@ -37,7 +38,21 @@
         />
     <item
         android:title="Exit"
-        android:id="@+id/exit"/>
+        android:id="@+id/exit"
+
+        />
+
+    <item
+        android:id="@+id/btnDel"
+        android:title="Deltete"
+        android:icon="@drawable/baseline_delete_24"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/btnCancle"
+        android:title="CANCEL"
+        app:showAsAction="always"/>
 
 
 </menu>
