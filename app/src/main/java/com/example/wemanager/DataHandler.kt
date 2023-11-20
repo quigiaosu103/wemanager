@@ -1,6 +1,7 @@
 package com.example.wemanager
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.util.Log
 import android.widget.Toast
@@ -23,6 +24,12 @@ class DataHandler {
         var database = FirebaseDatabase.getInstance()
         var ref = database.getReference("accounts")
         ref.child(account.UserName).setValue(account)
+    }
+
+    public fun pushHistory(time:String, username: String) {
+        var database = FirebaseDatabase.getInstance()
+        var ref = database.getReference("accounts")
+        ref.child(username).child("history").child(time).setValue("true")
     }
 
     public fun getStudents():ArrayList<Student> {

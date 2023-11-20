@@ -39,8 +39,8 @@
     <item
         android:title="Exit"
         android:id="@+id/exit"
-
-        />
+        android:icon="@drawable/baseline_exit_to_app_24"
+       />
 
     <item
         android:id="@+id/btnDel"

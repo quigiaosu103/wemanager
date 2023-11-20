@@ -1,17 +1,18 @@
 package com.example.wemanager
 
 import android.content.ContentValues.TAG
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Phone
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -19,13 +20,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.*
-import androidx.appcompat.widget.Toolbar
 import java.text.Collator
 import java.util.Locale
 import kotlin.random.Random
+
 
 class MainActivity : AppCompatActivity() {
     private var btn: Button?=null
@@ -137,6 +135,9 @@ class MainActivity : AppCompatActivity() {
             R.id.btnDel -> {
                 confirmDelete(1)
                 invalidateOptionsMenu()
+            }
+            R.id.exit -> {
+                getShareRefData()
             }
         }
 
@@ -268,4 +269,12 @@ class MainActivity : AppCompatActivity() {
         adapter = StudentAdapter(newAdapterData)
         layout.adapter = adapter
     }
+
+    fun getShareRefData() {
+        val sharedPref = getSharedPreferences("storage_account", Context.MODE_PRIVATE)
+        val username = sharedPref.getString("username", "null")
+        val role =  sharedPref.getString("role", "null")
+        Toast.makeText(this, "username: $username, role: $role", Toast.LENGTH_SHORT).show()
+    }
+
 }
