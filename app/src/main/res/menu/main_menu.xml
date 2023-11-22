@@ -37,7 +37,16 @@
 
         />
     <item
-        android:title="Exit"
+        android:id="@+id/userManager"
+        android:title="User Managerment"
+        />
+
+    <item
+        android:id="@+id/studentManager"
+        android:title="Student Managerment"
+        />
+    <item
+        android:title="Logout"
         android:id="@+id/exit"
         android:icon="@drawable/baseline_exit_to_app_24"
        />
@@ -53,6 +62,7 @@
         android:id="@+id/btnCancle"
         android:title="CANCEL"
         app:showAsAction="always"/>
+
 
 
 </menu>

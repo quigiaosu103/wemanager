@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.android.material:material:1.10.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.9")
     implementation("androidx.recyclerview:recyclerview:1.2.1")

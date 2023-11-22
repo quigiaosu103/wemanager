@@ -1,12 +1,12 @@
 package com.example.wemanager
 
 data class Account(val UserName: String,
-                   val Age: Int,
-                   val FullName: String,
-                   val Image: String,
-                   val HashPassword: String,
-                   val PhoneNumber: String,
-                   val Role: String,
-                   val Status: String,
-                   val History: ArrayList<String>) {
+                   var Age: Int,
+                   var FullName: String,
+                   var Image: String,
+                   var HashPassword: String,
+                   var PhoneNumber: String,
+                   var Role: String,
+                   var Status: String,
+                   var History: ArrayList<String>) {
 }

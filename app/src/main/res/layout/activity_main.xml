@@ -9,12 +9,14 @@
 
     >
     <androidx.appcompat.widget.Toolbar
-        android:background="#fff"
+        android:background="@drawable/corner_shadow"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:outlineAmbientShadowColor="#ccc"
         app:titleTextColor="#4FB0F7"
+        android:backgroundTint="#eee"
+
         xmlns:android="http://schemas.android.com/apk/res/android" >
 
     </androidx.appcompat.widget.Toolbar>
@@ -36,6 +38,7 @@
         android:layout_height="60dp"
         android:paddingLeft="68dp"
         android:paddingRight="68dp"
+        android:background="#eee"
 
         >
        <ImageButton

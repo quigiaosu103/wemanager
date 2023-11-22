@@ -15,9 +15,14 @@
         android:theme="@style/Theme.Wemanager"
         tools:targetApi="31">
         <activity
+            android:name=".NewAccount"
+            android:exported="false" />
+        <activity
+            android:name=".AccountView"
+            android:exported="false" />
+        <activity
             android:name=".StudentInfo"
             android:exported="false" />
-
         <activity
             android:name=".Login"
             android:exported="true">
@@ -29,7 +34,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

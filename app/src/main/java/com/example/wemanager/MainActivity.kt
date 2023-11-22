@@ -2,6 +2,7 @@ package com.example.wemanager
 
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.auth.User
 import java.text.Collator
 import java.util.Locale
 import kotlin.random.Random
@@ -30,10 +32,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: FirebaseDatabase
     private lateinit var ref: DatabaseReference
     private lateinit var layout: RecyclerView
+    private lateinit var accountAdapter: AccountAdapter
     private lateinit var adapter: StudentAdapter
     private  var toolbar: Toolbar?=null
     private var adapterData =  ArrayList<Student>()
+    private var accountAdapterData = ArrayList<Account>()
     private var isSelecting = false
+    private var isUserMagerment = false
+    private val context = this
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -62,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.main_menu, menu)
         val searchItem = menu?.findItem(R.id.search)
         val searchView = searchItem?.actionView as SearchView
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 handleSearch(query)
@@ -80,12 +87,18 @@ class MainActivity : AppCompatActivity() {
             R.id.add -> {
 //
 
+                if(isUserMagerment) {
+                    var intent = Intent(this, NewAccount::class.java)
+                    startActivity(intent)
+                }else {
+                    var intent = Intent(this, StudentInfo::class.java)
+                    startActivity(intent)
+                }
+//                var dataHandler = DataHandler()
 
-                var dataHandler = DataHandler()
-
-                var id = Random.nextInt(10000,99999)
-                dataHandler.pushStudent(Student(id.toString(), "Vo Nguyen Phu Qui", Age = 20, Class= "283921", Deparment = "IT", PhoneNumber = "d903", Creadits = 100, Certificates = emptyList()))
-//                dataHandler.pushAccount(Account(FullName = "Phu Qui", Age=20, PhoneNumber = "07391239", Role = "Admin", Status = "Normal",  Image = "http://dasdsa.jpg", HashPassword = "dajsdna", UserName = "Quigiaosu103", History = ArrayList<String>()))
+//                var id = Random.nextInt(10000,99999)
+//                dataHandler.pushStudent(Student(id.toString(), "Vo Nguyen Phu Qui", Age = 20, Class= "283921", Deparment = "IT", PhoneNumber = "d903", Creadits = 100, Certificates = emptyList()))
+//                dataHandler.pushAccount(Account(FullName = "Hải Phèo", Age=20, PhoneNumber = "07391239", Role = "Manager", Status = "Normal",  Image = "Vectoravatar.jpg", HashPassword = "123", UserName = "Haipheo", History = ArrayList<String>()))
 //                var intent = Intent(this, StudentInfo::class.java)
 //                startActivity(intent)
                 return true
@@ -137,7 +150,17 @@ class MainActivity : AppCompatActivity() {
                 invalidateOptionsMenu()
             }
             R.id.exit -> {
-                getShareRefData()
+                startActivity(Intent(this, Login::class.java))
+            }
+            R.id.userManager -> {
+                isUserMagerment = true
+                getAccounts()
+                invalidateOptionsMenu()
+            }
+            R.id.studentManager -> {
+                isUserMagerment = false
+                getStudents()
+                invalidateOptionsMenu()
             }
         }
 
@@ -205,16 +228,62 @@ class MainActivity : AppCompatActivity() {
         ref.addValueEventListener(studentsListener)
     }
 
+
+    public fun getAccounts() {
+        val accountsListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                accountAdapterData = ArrayList<Account>()
+                if (dataSnapshot.exists())
+                    for(data in dataSnapshot.children) {
+                        var age = data.child("age").getValue(Int::class.java)
+                        var name = data.child("fullName").getValue(String::class.java)
+                        var hashPass = data.child("hashPassword").getValue(String::class.java)
+                        var phone = data.child("phoneNumber").getValue(String::class.java)
+                        var image = data.child("image").getValue(String::class.java)
+                        var role = data.child("role").getValue(String::class.java)
+                        var status = data.child("status").getValue(String::class.java)
+                        var username = data.child("userName").getValue(String::class.java)
+
+                        val history = ArrayList<String>()
+                        val historySnapshot = data.child("history")
+                        if(historySnapshot.exists()) {
+                            for (htrSnapshot in historySnapshot.children) {
+                                history.add(htrSnapshot.key.toString())
+                            }
+                        }
+
+                        val account = Account(UserName = username!!, FullName = name!!, Age = age!!, Role = role!!, PhoneNumber = phone!!, Status = status!!, HashPassword = hashPass!!, Image = image!!, History = history)
+                        accountAdapterData.add(account)
+                    }
+                Log.e("tag", "here")
+                accountAdapter = AccountAdapter(accountAdapterData, context)
+                adapter.clear()
+                layout.adapter = accountAdapter
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        var ref = FirebaseDatabase.getInstance().getReference("accounts")
+        ref.addValueEventListener(accountsListener)
+    }
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
 
         for (i in 0 until menu.size()) {
             menu.getItem(i).isVisible = !isSelecting
         }
+        menu.findItem(R.id.studentManager).isVisible = isUserMagerment
+        menu.findItem(R.id.search).isVisible = !isUserMagerment
 
-
+        val sharedPref = getSharedPreferences("storage_account", Context.MODE_PRIVATE)
+        val role = sharedPref.getString("role", "null")
+        if(role != "Admin") {
+            menu!!.findItem(R.id.userManager).isVisible = false
+        }else {
+            menu!!.findItem(R.id.userManager).isVisible = !isUserMagerment
+        }
         menu.findItem(R.id.btnDel).isVisible = isSelecting
         menu.findItem(R.id.btnCancle).isVisible = isSelecting
-
         return super.onPrepareOptionsMenu(menu)
     }
 
@@ -262,6 +331,26 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Romve Failed!", Toast.LENGTH_SHORT).show()
                 }
         })
+    }
+
+    fun removeAccounts() {
+        fun deleteStudentsFB() {
+            var database = FirebaseDatabase.getInstance()
+            var ref = database.getReference("accounts")
+            var idList = adapter.removeIdList
+            idList.forEach({
+                    it->
+                ref.child(it).removeValue().addOnCompleteListener{
+                        it ->
+                    Toast.makeText(this, "Romve successfully!", Toast.LENGTH_SHORT).show()
+                }
+                    .addOnFailureListener{
+                            it ->
+                        Toast.makeText(this, "Romve Failed!", Toast.LENGTH_SHORT).show()
+                    }
+            })
+        }
+
     }
 
     fun handleSearch(searchValue: String) {

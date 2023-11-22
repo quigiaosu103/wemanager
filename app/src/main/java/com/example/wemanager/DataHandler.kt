@@ -32,6 +32,18 @@ class DataHandler {
         ref.child(username).child("history").child(time).setValue("true")
     }
 
+    public fun removeAccount(username: String) {
+        var database = FirebaseDatabase.getInstance()
+        var ref = database.getReference("accounts")
+        ref.child(username).removeValue().addOnCompleteListener{ it ->
+                Log.e("remove", "Romve successfully!")
+        }
+            .addOnFailureListener{
+                    it ->
+                Log.e("remove", "Romve failed!")
+            }
+    }
+
     public fun getStudents():ArrayList<Student> {
         var studentsList = ArrayList<Student>()
         val studentsListener = object : ValueEventListener {

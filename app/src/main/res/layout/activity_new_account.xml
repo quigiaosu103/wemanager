@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewAccount"
+    android:orientation="vertical">
+    <LinearLayout
+        android:background="@drawable/corner_shadow"
+        android:translationZ="8dp"
+        android:elevation="8dp"
+        android:layout_marginBottom="5dp"
+        android:outlineSpotShadowColor="#ccc"
+        android:backgroundTint="#fff"
+        android:layout_width="match_parent"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:layout_height="60dp">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/back_icon"
+            android:background="#fff"
+
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <ImageButton
+            android:id="@+id/btnSave"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/baseline_save_24"
+            android:background="#fff"
+            android:layout_gravity="end"
+            />
+
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:padding="12dp"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintLeft_toLeftOf="parent">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgAvatar"
+                app:shapeAppearanceOverlay="@style/circleImageView"
+                android:layout_width="114dp"
+                android:layout_height="114dp"
+                android:src="@drawable/user_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+
+                />
+
+            <ImageButton
+                android:id="@+id/btnChangeImage"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="-32dp"
+                android:src="@drawable/baseline_camera_alt_24"
+                app:layout_constraintLeft_toLeftOf="@id/imgAvatar"
+                app:layout_constraintTop_toBottomOf="@id/imgAvatar"
+                />
+            <EditText
+                android:background="#fff"
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Full name..."
+                android:textSize="24dp"
+                android:textColor="#4FB0F7"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/imgAvatar"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="24dp"
+                />
+
+
+            <TextView
+                android:layout_marginTop="42dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username:"
+                android:textSize="24dp"
+                android:id="@+id/nameLabel"
+                app:layout_constraintTop_toBottomOf="@id/txtName"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:textColor="#686868"
+                />
+            <EditText
+                android:id="@+id/inputUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="41dp"
+                android:paddingLeft="8dp"
+                android:paddingEnd="32dp"
+                android:backgroundTint="#ccc"
+                android:background= "@drawable/circle_round"
+                android:hint="username..."
+                app:layout_constraintLeft_toRightOf="@id/nameLabel"
+                app:layout_constraintBottom_toBottomOf="@id/nameLabel"
+                app:layout_constraintTop_toTopOf="@id/nameLabel"
+                android:layout_marginLeft="10dp"
+                android:textSize="24dp"
+                android:textColor="#686868"
+                />
+
+            <TextView
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password:"
+                android:textSize="24dp"
+                android:id="@+id/passLabel"
+                app:layout_constraintTop_toBottomOf="@id/inputUsername"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:textColor="#686868"
+                />
+            <EditText
+                android:id="@+id/inputPass"
+                android:layout_width="wrap_content"
+                android:layout_height="41dp"
+                android:paddingLeft="8dp"
+                android:paddingEnd="32dp"
+                android:backgroundTint="#ccc"
+                android:background= "@drawable/circle_round"
+                android:hint="Password..."
+                app:layout_constraintLeft_toRightOf="@id/passLabel"
+                app:layout_constraintBottom_toBottomOf="@id/passLabel"
+                app:layout_constraintTop_toTopOf="@id/passLabel"
+                android:layout_marginLeft="10dp"
+                android:textSize="24dp"
+                android:textColor="#686868"
+                />
+
+            <TextView
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Age:"
+                android:textSize="24dp"
+                android:id="@+id/ageLabel"
+                app:layout_constraintTop_toBottomOf="@id/passLabel"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:textColor="#686868"
+                />
+            <EditText
+
+                android:paddingLeft="8dp"
+                android:paddingEnd="32dp"
+                android:id="@+id/inputAge"
+                android:layout_width="wrap_content"
+                android:layout_height="41dp"
+                android:background= "@drawable/circle_round"
+                android:hint="age..."
+                android:backgroundTint="#ccc"
+                android:inputType="number"
+                app:layout_constraintLeft_toRightOf="@id/ageLabel"
+                app:layout_constraintBottom_toBottomOf="@id/ageLabel"
+                app:layout_constraintTop_toTopOf="@id/ageLabel"
+                android:layout_marginLeft="10dp"
+                android:textSize="24dp"
+                android:textColor="#686868"
+                />
+            <TextView
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone Number:"
+                android:textSize="24dp"
+                android:id="@+id/phoneLabel"
+                app:layout_constraintTop_toBottomOf="@id/ageLabel"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:textColor="#686868"
+                />
+            <EditText
+                android:paddingLeft="8dp"
+                android:paddingEnd="32dp"
+                android:id="@+id/inputPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="41dp"
+                android:background= "@drawable/circle_round"
+                android:hint="+84..."
+                android:backgroundTint="#ccc"
+                app:layout_constraintLeft_toRightOf="@id/phoneLabel"
+                app:layout_constraintBottom_toBottomOf="@id/phoneLabel"
+                app:layout_constraintTop_toTopOf="@id/phoneLabel"
+                android:layout_marginLeft="10dp"
+                android:textSize="24dp"
+                android:textColor="#686868"
+                />
+
+
+            <TextView
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Role:"
+                android:textSize="24dp"
+                android:id="@+id/roleLabel"
+                app:layout_constraintTop_toBottomOf="@id/phoneLabel"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:textColor="#686868"
+                />
+            <EditText
+                android:paddingLeft="8dp"
+                android:paddingEnd="32dp"
+                android:id="@+id/inputRole"
+                android:layout_width="wrap_content"
+                android:layout_height="41dp"
+                android:background= "@drawable/circle_round"
+                android:hint="role..."
+                android:backgroundTint="#ccc"
+                app:layout_constraintLeft_toRightOf="@id/roleLabel"
+                app:layout_constraintBottom_toBottomOf="@id/roleLabel"
+                app:layout_constraintTop_toTopOf="@id/roleLabel"
+                android:layout_marginLeft="10dp"
+                android:textSize="24dp"
+                android:textColor="#686868"
+                />
+
+            <TextView
+                android:layout_marginTop="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status:"
+                android:textSize="24dp"
+                android:id="@+id/statusLabel"
+                app:layout_constraintTop_toBottomOf="@id/roleLabel"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:textColor="#686868"
+                />
+            <EditText
+                android:paddingLeft="8dp"
+                android:paddingEnd="32dp"
+                android:id="@+id/inputStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="41dp"
+                android:background= "@drawable/circle_round"
+                android:hint="status..."
+                android:backgroundTint="#ccc"
+                app:layout_constraintLeft_toRightOf="@id/statusLabel"
+                app:layout_constraintBottom_toBottomOf="@id/statusLabel"
+                app:layout_constraintTop_toTopOf="@id/statusLabel"
+                android:layout_marginLeft="10dp"
+                android:textSize="24dp"
+                android:textColor="#686868"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</LinearLayout>

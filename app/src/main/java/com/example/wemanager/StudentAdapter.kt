@@ -44,6 +44,11 @@ class StudentAdapter(var mList: ArrayList<Student>): RecyclerView.Adapter<Studen
         notifyDataSetChanged()
     }
 
+    fun clear() {
+        mList.clear()
+        notifyDataSetChanged()
+    }
+
 
     fun removeSelected() {
         mList = ArrayList(mList.filterIndexed{
