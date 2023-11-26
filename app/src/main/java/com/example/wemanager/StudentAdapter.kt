@@ -1,5 +1,7 @@
 package com.example.wemanager
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -7,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class StudentAdapter(var mList: ArrayList<Student>): RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
+class StudentAdapter(var mList: ArrayList<Student>, val context: Context): RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
    public var isSelecting = false
     public var removeIdList = ArrayList<String>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentAdapter.ViewHolder {
@@ -31,7 +33,14 @@ class StudentAdapter(var mList: ArrayList<Student>): RecyclerView.Adapter<Studen
                     v.alpha = 0.6.toFloat()
                     removeIdList.add(item.Id)
                 }
+            }else {
+                var intent = Intent(context, StudentInfo::class.java)
+                intent.putExtra("isView", true)
+                intent.putExtra("studentID", item.Id)
+                context.startActivity(intent)
             }
+
+
         }
     }
 

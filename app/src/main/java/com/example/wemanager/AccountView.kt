@@ -35,7 +35,7 @@ class AccountView : AppCompatActivity() {
     private lateinit var btnEdit: ImageButton
     private lateinit var btnSave: ImageButton
     private lateinit var btnImageChange: ImageButton
-    private lateinit var historyAdapter : HistoryAdapter
+    private lateinit var historyAdapter: HistoryAdapter
 
     private lateinit var imageUri: Uri
     private var isEditing = false
@@ -60,41 +60,38 @@ class AccountView : AppCompatActivity() {
 
         var username = intent.getStringExtra("username").toString()
         getAccountByUserName(username)
-        btnBack.setOnClickListener{
-            v->
+        btnBack.setOnClickListener { v ->
             var intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
-        btnEdit.setOnClickListener{
-            v->
+        btnEdit.setOnClickListener { v ->
             enableEditable()
 
         }
 
-        btnSave.setOnClickListener{
-                v->
+        btnSave.setOnClickListener { v ->
 
-                account.FullName = txtName.text.toString()
-                account.Age = txtAge.text.toString().toInt()
-                account.Role = txtRole.text.toString()
-                account.PhoneNumber = txtPhone.text.toString()
-                account.Status = txtStatus.text.toString()
-                var dataHandler = DataHandler()
-                dataHandler.pushAccount(account)
-                disabledEditable()
+            account.FullName = txtName.text.toString()
+            account.Age = txtAge.text.toString().toInt()
+            account.Role = txtRole.text.toString()
+            account.PhoneNumber = txtPhone.text.toString()
+            account.Status = txtStatus.text.toString()
+            var dataHandler = DataHandler()
+            dataHandler.pushAccount(account)
+            disabledEditable()
 
 
         }
 
-        btnImageChange.setOnClickListener{
-            v->
+        btnImageChange.setOnClickListener { v ->
             selectImage()
         }
 
 
-
     }
+
+
 
 
 

@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         layout.layoutManager = LinearLayoutManager(this)
         adapterData.add(Student(Id="52100996", FullName = "Qui", Deparment = "IT", Age = 20, Class = "1231", Creadits = 90, PhoneNumber = "3e3434", Certificates = emptyList()))
 
-        adapter = StudentAdapter(adapterData)
+        adapter = StudentAdapter(adapterData, this)
 
         layout.adapter = adapter
         getStudents()
@@ -92,41 +92,35 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }else {
                     var intent = Intent(this, StudentInfo::class.java)
+                    intent.putExtra("isView", false)
                     startActivity(intent)
                 }
-//                var dataHandler = DataHandler()
-
-//                var id = Random.nextInt(10000,99999)
-//                dataHandler.pushStudent(Student(id.toString(), "Vo Nguyen Phu Qui", Age = 20, Class= "283921", Deparment = "IT", PhoneNumber = "d903", Creadits = 100, Certificates = emptyList()))
-//                dataHandler.pushAccount(Account(FullName = "Hải Phèo", Age=20, PhoneNumber = "07391239", Role = "Manager", Status = "Normal",  Image = "Vectoravatar.jpg", HashPassword = "123", UserName = "Haipheo", History = ArrayList<String>()))
-//                var intent = Intent(this, StudentInfo::class.java)
-//                startActivity(intent)
                 return true
             }
             R.id.sortAge-> {
 
                 adapterData= ArrayList(adapterData.sortedBy { it.Age })
-                adapter = StudentAdapter(adapterData)
+                adapter = StudentAdapter(adapterData, this)
                 layout.adapter = adapter
                 return true
             }
 
             R.id.sortByDe -> {
                 adapterData = ArrayList(adapterData.sortedBy { it.Deparment })
-                adapter = StudentAdapter(adapterData)
+                adapter = StudentAdapter(adapterData, this)
                 layout.adapter = adapter
                 return true
             }
             R.id.sortByName -> {
                 var collator = Collator.getInstance(Locale("vi", "VN"))
                 adapterData = ArrayList(adapterData.sortedWith(compareBy(collator) {it.FullName}))
-                adapter = StudentAdapter(adapterData)
+                adapter = StudentAdapter(adapterData, this)
                 layout.adapter = adapter
                 return true
             }
             R.id.sortId -> {
                 adapterData = ArrayList(adapterData.sortedBy { it.Id })
-                adapter = StudentAdapter(adapterData)
+                adapter = StudentAdapter(adapterData, this)
                 layout.adapter = adapter
                 return true
             }
@@ -140,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                 isSelecting = false
                 adapter.isSelecting = false
                 adapter.removeIdList.clear()
-                adapter = StudentAdapter(adapterData)
+                adapter = StudentAdapter(adapterData, this)
                 layout.adapter = adapter
                 invalidateOptionsMenu()
                 return true
@@ -217,7 +211,7 @@ class MainActivity : AppCompatActivity() {
                         adapterData.add(student)
                     }
 //                var sortList = ArrayList(studentsList.sortedBy { it.Age })
-                adapter = StudentAdapter(adapterData)
+                adapter = StudentAdapter(adapterData, context)
                 layout.adapter = adapter
             }
             override fun onCancelled(databaseError: DatabaseError) {
@@ -355,7 +349,7 @@ class MainActivity : AppCompatActivity() {
 
     fun handleSearch(searchValue: String) {
         var newAdapterData = ArrayList(adapterData.filter { it.FullName.contains(searchValue, ignoreCase = true) ||it.Id.contains(searchValue, ignoreCase = true) ||it.Class.startsWith(searchValue, ignoreCase = true) ||it.Deparment.startsWith(searchValue, ignoreCase = true)})
-        adapter = StudentAdapter(newAdapterData)
+        adapter = StudentAdapter(newAdapterData, this)
         layout.adapter = adapter
     }
 

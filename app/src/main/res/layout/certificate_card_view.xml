@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="10dp"
 
-    xmlns:android="http://schemas.android.com/apk/res/android" >
-    <LinearLayout
+    android:background="@drawable/corner_shadow"
+    android:layout_margin="6dp"
+    android:translationZ="8dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="4dp"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">    <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:textAlignment="textEnd"
@@ -26,10 +32,17 @@
                 android:background="@drawable/edit_icon"
                 />
             <ImageButton
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/baseline_save_24"
+                />
+            <ImageButton
                 android:id="@+id/btnRemove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/remove_icon"
+                android:layout_marginLeft="12dp"
                 />
         </LinearLayout>
         <EditText
@@ -39,31 +52,38 @@
             android:layout_height="62dp"
             android:editable="false"
             android:text="Certificate name"
+            android:textColor="#4FB0F7"
             android:textAlignment="center"
             android:textStyle="bold" />
 
 
         <EditText
+            android:layout_marginLeft="8dp"
             android:id="@+id/txtContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Content"
+            android:hint="Content..."
             android:background="#fff"
-            android:editable="false"
+            android:enabled="false"
             />
         <EditText
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/txtDate"
-            android:text="10/10/2023"
             android:background="#fff"
-            android:editable="false"
+            android:enabled="false"
+            android:hint="Date..."
             />
         <EditText
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
             android:id="@+id/txtSigner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Signer name"
+            android:hint="Signer name"
             android:textAlignment="textEnd"
             android:background="#fff"
             />
