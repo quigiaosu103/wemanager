@@ -15,6 +15,26 @@ class DataHandler {
         var col = Firebase.firestore.collection("accounts")
         col.document(account.UserName).set(account)
     }
+    public fun  updateCer(certificate: Certificate) {
+        var studentId = certificate.studentId
+        if(studentId != "") {
+            var col = Firebase.firestore.collection("students")
+            col.document(studentId!!).get()
+                .addOnSuccessListener {
+                        document->
+                    var student: MutableMap<String, Any>? = document.data
+                    var certificatesList = student?.get("certificates") as ArrayList<HashMap<String, String>>
+                    var newL = ArrayList<Certificate>()
+                    for (ct in certificatesList) {
+                        if(ct.get("id") != certificate.Id) {
+                            newL.add(Certificate(Id = ct.get("id")!!, Name = ct.get("name")!!, Content = ct.get("content")!!, Date = ct.get("date")!!, Signer = ct.get("signer")!!, studentId = ct.get("studentId")!!))
+                        }
+                    }
+                    newL.add(certificate)
+                    col.document(studentId!!).update("certificates", newL)
+                }
+        }
+    }
 
     public fun pushHistory(time:String, username: String) {
         var col = Firebase.firestore.collection("accounts")
@@ -80,6 +100,10 @@ class DataHandler {
             .addOnSuccessListener { Log.e("remove", "Update successfully!")}
             .addOnFailureListener {Log.e("remove", "Update failed!") }
     }
+
+
+
+
 
 
 

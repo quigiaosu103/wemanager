@@ -1,5 +1,6 @@
 package com.example.wemanager
 
+import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -25,6 +27,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.io.OutputStream
 import java.text.Collator
 import java.util.Locale
 import kotlin.random.Random
@@ -32,6 +35,7 @@ import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private var btn: Button?=null
+    private lateinit var btnExport: ImageButton
     private lateinit var database: FirebaseDatabase
     private lateinit var ref: DatabaseReference
     private lateinit var layout: RecyclerView
@@ -51,11 +55,21 @@ class MainActivity : AppCompatActivity() {
         layout = findViewById(R.id.mainRecyclerView)
         btnInfo = findViewById(R.id.btnInfo)
         btnHome = findViewById(R.id.btnHome)
+        btnExport = findViewById(R.id.btnExport)
+        val sharedPref = getSharedPreferences("storage_account", Context.MODE_PRIVATE)
+        val usname = sharedPref.getString("username", "null")
+        val role = sharedPref.getString("role", "Employee")
+        if(role == "Employee") {
+            btnExport.isVisible = false
+        }
+        btnExport.setOnClickListener{
+            v->
+            var it = Intent(this, ExportData::class.java)
+            startActivity(it)
+        }
+
         btnInfo.setOnClickListener{
             v->
-            val sharedPref = getSharedPreferences("storage_account", Context.MODE_PRIVATE)
-            val usname = sharedPref.getString("username", "null")
-            val role = sharedPref.getString("role", "Employee")
             var intent = Intent(this, AccountView::class.java)
             intent.putExtra("isView", true)
             intent.putExtra("username", usname)
@@ -233,6 +247,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
 
         for (i in 0 until menu.size()) {
@@ -261,6 +276,7 @@ class MainActivity : AppCompatActivity() {
         menu.findItem(R.id.btnCancle).isVisible = isSelecting
         return super.onPrepareOptionsMenu(menu)
     }
+
 
     fun confirmDelete(index: Int) {
         var builder: AlertDialog.Builder = AlertDialog.Builder(this)
