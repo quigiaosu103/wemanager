@@ -50,8 +50,7 @@
             android:background="#fff"
             android:id="@+id/txtName"
             android:layout_height="62dp"
-            android:editable="false"
-            android:text="Certificate name"
+            android:hint="Certificate name"
             android:textColor="#4FB0F7"
             android:textAlignment="center"
             android:textStyle="bold" />
@@ -64,7 +63,6 @@
             android:layout_height="wrap_content"
             android:hint="Content..."
             android:background="#fff"
-            android:enabled="false"
             />
         <EditText
             android:layout_marginTop="8dp"
@@ -73,7 +71,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/txtDate"
             android:background="#fff"
-            android:enabled="false"
             android:hint="Date..."
             />
         <EditText

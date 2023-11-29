@@ -7,9 +7,11 @@ import android.view.View
 import android.widget.TextView
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 
-class StudentAdapter(var mList: ArrayList<Student>, val context: Context): RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
+class StudentAdapter(var mList: ArrayList<Student>, val context: Context, val appContext: Context): RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
    public var isSelecting = false
     public var removeIdList = ArrayList<String>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentAdapter.ViewHolder {
@@ -37,10 +39,18 @@ class StudentAdapter(var mList: ArrayList<Student>, val context: Context): Recyc
                 var intent = Intent(context, StudentInfo::class.java)
                 intent.putExtra("isView", true)
                 intent.putExtra("studentID", item.Id)
+                val sharedPref = appContext.getSharedPreferences("my_ref", Context.MODE_PRIVATE)
+                val editor = sharedPref.edit()
+                editor.putString("studentId", item.Id)
                 context.startActivity(intent)
             }
 
 
+        }
+
+        holder.itemView.setOnLongClickListener {
+            showPopupMenu(holder.itemView, item.Id)
+            true
         }
     }
 
@@ -66,6 +76,46 @@ class StudentAdapter(var mList: ArrayList<Student>, val context: Context): Recyc
         })
         removeIdList.clear()
         notifyDataSetChanged()
+    }
+
+    private fun showPopupMenu(view: View, studentId: String) {
+        val popupMenu = PopupMenu(context, view)
+        popupMenu.inflate(R.menu.popup_menu) // Inflate your menu resource
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.popupBtnDelete -> {
+                    confirmDelete(studentId)
+                    true
+                }
+                else -> {
+                    true
+                }
+            }
+        }
+
+        popupMenu.show()
+    }
+
+    fun confirmDelete(studentId: String) {
+        var builder: AlertDialog.Builder = AlertDialog.Builder(context)
+        builder.setMessage("Confirm Delete Students")
+            .setTitle("Alert")
+            .setPositiveButton("DELETE") {
+                    dialog, which ->
+                var dataHandler = DataHandler()
+                dataHandler.removeStudent(studentId)
+            }
+            .setNegativeButton("CANCLE") {
+                    dialog, which ->
+            }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+                v->
+            dialog.cancel()
+        }
     }
 
 

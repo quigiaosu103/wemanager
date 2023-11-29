@@ -10,6 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -26,15 +28,14 @@ class Login : AppCompatActivity() {
         inputUserName = findViewById(R.id.inputUserName)
         btnSubmit!!.setOnClickListener{
             v->
-            var ref = FirebaseDatabase.getInstance().getReference("accounts")
-            ref.child(inputUserName!!.text.toString()).get().addOnCompleteListener{
-                task ->
-                if(task.isSuccessful){
-                    if(task.result.exists()) {
-                        var dataSnapshot = task.result
-                        var pass = dataSnapshot.child("hashPassword").getValue(String::class.java)
-                        var role = dataSnapshot.child("role").getValue(String::class.java)
-                        var status = dataSnapshot.child("status").getValue(String::class.java)
+            var col = Firebase.firestore.collection("accounts")
+            col.document(inputUserName!!.text.toString()).get().addOnSuccessListener{
+                    document->
+                if(document.data != null) {
+                        var dataSnapshot: MutableMap<String, Any>? = document.data
+                        var pass = dataSnapshot!!.get("hashPassword").toString()
+                        var role = dataSnapshot!!.get("role").toString()
+                        var status = dataSnapshot!!.get("status").toString()
                         var usName = inputUserName!!.text.toString()
                         Log.e("login", "request pass: "+pass)
                         if(pass == inputPass!!.text.toString()) {
@@ -52,15 +53,15 @@ class Login : AppCompatActivity() {
                                 dataHandler.pushHistory(time = date, usName)
                                 var intent = Intent(this, MainActivity::class.java)
                                 startActivity(intent)
+                            }else {
+                                Toast.makeText(this, "Your account have been locked!", Toast.LENGTH_SHORT).show()
                             }
                         }else {
                             Toast.makeText(this, "User name or password is not correct", Toast.LENGTH_SHORT).show()
                         }
-                    }else {
-                        Toast.makeText(this, "User name or password is not correct", Toast.LENGTH_SHORT).show()
-                    }
+
                 }else {
-                    Toast.makeText(this, "failed 1", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "User name or password is not correct", Toast.LENGTH_SHORT).show()
                 }
 
             }

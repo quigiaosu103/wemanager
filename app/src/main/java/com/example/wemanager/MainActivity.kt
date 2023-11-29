@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.auth.User
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.text.Collator
 import java.util.Locale
 import kotlin.random.Random
@@ -40,26 +43,30 @@ class MainActivity : AppCompatActivity() {
     private var isSelecting = false
     private var isUserMagerment = false
     private val context = this
+    private lateinit var btnInfo: ImageButton
+    private lateinit var btnHome: ImageButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         layout = findViewById(R.id.mainRecyclerView)
+        btnInfo = findViewById(R.id.btnInfo)
+        btnHome = findViewById(R.id.btnHome)
+        btnInfo.setOnClickListener{
+            v->
+            val sharedPref = getSharedPreferences("storage_account", Context.MODE_PRIVATE)
+            val usname = sharedPref.getString("username", "null")
+            val role = sharedPref.getString("role", "Employee")
+            var intent = Intent(this, AccountView::class.java)
+            intent.putExtra("isView", true)
+            intent.putExtra("username", usname)
+            intent.putExtra("role", role)
+            startActivity(intent)
+        }
         layout.layoutManager = LinearLayoutManager(this)
         adapterData.add(Student(Id="52100996", FullName = "Qui", Deparment = "IT", Age = 20, Class = "1231", Creadits = 90, PhoneNumber = "3e3434", Certificates = emptyList()))
-
-        adapter = StudentAdapter(adapterData, this)
-
+        adapter = StudentAdapter(adapterData, context,applicationContext)
         layout.adapter = adapter
         getStudents()
-//        btn = findViewById(R.id.btn)
-//        btn!!.setOnClickListener{
-//            v->
-//Account(FullName = "Phu Qui", Age=20, PhoneNumber = "07391239", Role = "Admin", Status = "Normal",  Image = "http://dasdsa.jpg", HashPassword = "dajsdna")
-//            database = FirebaseDatabase.getInstance()
-//            ref = database.getReference("accounts")
-//            var account =
-//            ref.child("quivo111").setValue(account)
-//        }
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
     }
@@ -100,41 +107,35 @@ class MainActivity : AppCompatActivity() {
             R.id.sortAge-> {
 
                 adapterData= ArrayList(adapterData.sortedBy { it.Age })
-                adapter = StudentAdapter(adapterData, this)
+                adapter = StudentAdapter(adapterData,context, applicationContext)
                 layout.adapter = adapter
                 return true
             }
 
             R.id.sortByDe -> {
                 adapterData = ArrayList(adapterData.sortedBy { it.Deparment })
-                adapter = StudentAdapter(adapterData, this)
+                adapter = StudentAdapter(adapterData,context, applicationContext)
                 layout.adapter = adapter
                 return true
             }
             R.id.sortByName -> {
                 var collator = Collator.getInstance(Locale("vi", "VN"))
                 adapterData = ArrayList(adapterData.sortedWith(compareBy(collator) {it.FullName}))
-                adapter = StudentAdapter(adapterData, this)
+                adapter = StudentAdapter(adapterData, context,applicationContext)
                 layout.adapter = adapter
                 return true
             }
             R.id.sortId -> {
                 adapterData = ArrayList(adapterData.sortedBy { it.Id })
-                adapter = StudentAdapter(adapterData, this)
+                adapter = StudentAdapter(adapterData, context, applicationContext)
                 layout.adapter = adapter
-                return true
-            }
-            R.id.removeMany -> {
-                isSelecting = true
-                adapter.isSelecting = true
-                invalidateOptionsMenu()
                 return true
             }
             R.id.btnCancle -> {
                 isSelecting = false
                 adapter.isSelecting = false
                 adapter.removeIdList.clear()
-                adapter = StudentAdapter(adapterData, this)
+                adapter = StudentAdapter(adapterData, context, applicationContext)
                 layout.adapter = adapter
                 invalidateOptionsMenu()
                 return true
@@ -162,105 +163,76 @@ class MainActivity : AppCompatActivity() {
     }
 
     public fun getStudents(){
-
-        val studentsListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        var db = Firebase.firestore
+        db.collection("students")
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w(TAG, "listen:error", e)
+                    return@addSnapshotListener
+                }
                 adapterData = ArrayList<Student>()
-                if (dataSnapshot.exists())
-                    for(data in dataSnapshot.children) {
-                        var name = data.child("fullName").getValue().toString()
-                        var id = data.child("id").getValue().toString()
-                        var age = data.child("age").getValue(Int::class.java)
-                        var deparment = data.child("deparment").getValue().toString()
-                        var phone = data.child("phoneNumber").getValue().toString()
-                        var classof = data.child("class").getValue().toString()
-                        var creadits = data.child("creadits").getValue(Int::class.java)
-
-                        val certificatesList = ArrayList<Certificate>()
-                        val certificatesSnapshot = data.child("certificates")
-                        if(certificatesSnapshot.exists()) {
-                            for (certificateSnapshot in certificatesSnapshot.children) {
-                                val name = certificateSnapshot.child("name").getValue(String::class.java)
-                                if (name == null) {
-                                    Log.e("null", "name null")
-                                }
-                                val content = certificateSnapshot.child("content").getValue(String::class.java)
-                                if (content == null) {
-                                    Log.e("null", "content null")
-                                }else {
-                                    Log.e("null", content.toString())
-                                }
-                                val signer = certificateSnapshot.child("signer").getValue(String::class.java)
-                                if (signer == null) {
-                                    Log.e("null", "signer null")
-                                }
-                                val date = certificateSnapshot.child("date").getValue(String::class.java)
-                                if (date == null) {
-                                    Log.e("null", "date null")
-                                }
-                                val id = certificateSnapshot.child("id").getValue(String::class.java)
-                                if (id == null) {
-                                    Log.e("null", "id null")
-                                }
-                                val certificate = Certificate(Name=name!!, Content = content!!, Date =  date!!, Signer =  signer!!, Id = id!!)
-                                certificatesList.add(certificate)
-                            }
-                        }
-
-                        val student = Student(Id = id!!, FullName = name!!, Age = age!!, Deparment = deparment!!, PhoneNumber = phone!!, Class = classof!!, Creadits = creadits!!, Certificates = certificatesList)
-                        adapterData.add(student)
-                    }
-//                var sortList = ArrayList(studentsList.sortedBy { it.Age })
-                adapter = StudentAdapter(adapterData, context)
+                var historyList: ArrayList<String> = ArrayList(emptyList<String>())
+                for (document in snapshots!!.documents) {
+                    var certificatesList: ArrayList<Certificate> = ArrayList(emptyList())
+                    var st: MutableMap<String, Any>? = document.data
+                    var name = st?.get("fullName").toString()
+                    var id = st?.get("id").toString()
+                    var age = st?.get("age").toString().toInt()
+                    var deparment = st?.get("deparment").toString()
+                    var phone = st?.get("phoneNumber").toString()
+                    var classof = st?.get("class").toString()
+                    var creadits = st?.get("creadits").toString().toInt()
+                    certificatesList = st?.get("certificates") as ArrayList<Certificate>
+                    Log.e("Cer", ("${certificatesList}"))
+                    val student = Student(Id = id!!, FullName = name!!, Age = age!!, Deparment = deparment!!, PhoneNumber = phone!!, Class = classof!!, Creadits = creadits!!, Certificates = certificatesList)
+                    adapterData.add(student)
+                }
+                adapter = StudentAdapter(adapterData, context,  applicationContext)
                 layout.adapter = adapter
             }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        var ref = FirebaseDatabase.getInstance().getReference("Student")
-        ref.addValueEventListener(studentsListener)
+
+
     }
 
 
     public fun getAccounts() {
-        val accountsListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        var db = Firebase.firestore
+        db.collection("accounts")
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.w(TAG, "listen:error", e)
+                    return@addSnapshotListener
+                }
                 accountAdapterData = ArrayList<Account>()
-                if (dataSnapshot.exists())
-                    for(data in dataSnapshot.children) {
-                        var age = data.child("age").getValue(Int::class.java)
-                        var name = data.child("fullName").getValue(String::class.java)
-                        var hashPass = data.child("hashPassword").getValue(String::class.java)
-                        var phone = data.child("phoneNumber").getValue(String::class.java)
-                        var image = data.child("image").getValue(String::class.java)
-                        var role = data.child("role").getValue(String::class.java)
-                        var status = data.child("status").getValue(String::class.java)
-                        var username = data.child("userName").getValue(String::class.java)
 
-                        val history = ArrayList<String>()
-                        val historySnapshot = data.child("history")
-                        if(historySnapshot.exists()) {
-                            for (htrSnapshot in historySnapshot.children) {
-                                history.add(htrSnapshot.key.toString())
-                            }
-                        }
+                var historyList: ArrayList<String> = ArrayList(emptyList<String>())
+                for (document in snapshots!!.documents) {
+                    var account: MutableMap<String, Any>? = document.data
+                    var age = account?.get("age").toString().toInt()
+                    var fullName = account?.get("fullName").toString()
+                    var hashPass = account?.get("hashPassword").toString()
+                    var image = account?.get("image").toString()
+                    var phone = account?.get("phoneNumber").toString()
+                    var role = account?.get("role").toString()
+                    var status = account?.get("status").toString()
+                    var userName = account?.get("userName").toString()
+                    historyList = account?.get("history") as ArrayList<String>
 
-                        val account = Account(UserName = username!!, FullName = name!!, Age = age!!, Role = role!!, PhoneNumber = phone!!, Status = status!!, HashPassword = hashPass!!, Image = image!!, History = history)
-                        accountAdapterData.add(account)
-                    }
-                Log.e("tag", "here")
+                    Log.i("result", "out")
+                    var newAccount = Account(Age=age, UserName = userName!!, FullName = fullName!!, HashPassword = hashPass!!, Image = image!!, PhoneNumber = phone!!, Role = role!!, Status = status!!, History = historyList)
+                    accountAdapterData.add(newAccount)
+
+                }
                 accountAdapter = AccountAdapter(accountAdapterData, context)
                 adapter.clear()
                 layout.adapter = accountAdapter
             }
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        var ref = FirebaseDatabase.getInstance().getReference("accounts")
-        ref.addValueEventListener(accountsListener)
+
+
+
     }
+
+
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
 
         for (i in 0 until menu.size()) {
@@ -275,7 +247,16 @@ class MainActivity : AppCompatActivity() {
             menu!!.findItem(R.id.userManager).isVisible = false
         }else {
             menu!!.findItem(R.id.userManager).isVisible = !isUserMagerment
+            menu.findItem(R.id.sortId).isVisible = !isUserMagerment
+            menu.findItem(R.id.sortAge).isVisible = !isUserMagerment
+            menu.findItem(R.id.sortByName).isVisible = !isUserMagerment
+            menu.findItem(R.id.sortByDe).isVisible = !isUserMagerment
         }
+
+        if(role =="Employee") {
+            menu!!.findItem(R.id.add).isVisible = false
+        }
+
         menu.findItem(R.id.btnDel).isVisible = isSelecting
         menu.findItem(R.id.btnCancle).isVisible = isSelecting
         return super.onPrepareOptionsMenu(menu)
@@ -311,45 +292,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun deleteStudentsFB() {
-        var database = FirebaseDatabase.getInstance()
-        var ref = database.getReference("Student")
+        var col = Firebase.firestore
         var idList = adapter.removeIdList
-        idList.forEach({
-            it->
-            ref.child(it).removeValue().addOnCompleteListener{
-                it ->
-                Toast.makeText(this, "Romve successfully!", Toast.LENGTH_SHORT).show()
-            }
-                .addOnFailureListener{
-                    it ->
-                    Toast.makeText(this, "Romve Failed!", Toast.LENGTH_SHORT).show()
-                }
-        })
-    }
-
-    fun removeAccounts() {
-        fun deleteStudentsFB() {
-            var database = FirebaseDatabase.getInstance()
-            var ref = database.getReference("accounts")
-            var idList = adapter.removeIdList
-            idList.forEach({
-                    it->
-                ref.child(it).removeValue().addOnCompleteListener{
-                        it ->
-                    Toast.makeText(this, "Romve successfully!", Toast.LENGTH_SHORT).show()
-                }
-                    .addOnFailureListener{
-                            it ->
-                        Toast.makeText(this, "Romve Failed!", Toast.LENGTH_SHORT).show()
-                    }
-            })
+        idList.forEach { it ->
+            col.document(it).delete()
+                .addOnSuccessListener { Log.e("remove", "Romve successfully!") }
+                .addOnFailureListener { Log.e("remove", "Romve failed!") }
         }
-
     }
+
 
     fun handleSearch(searchValue: String) {
         var newAdapterData = ArrayList(adapterData.filter { it.FullName.contains(searchValue, ignoreCase = true) ||it.Id.contains(searchValue, ignoreCase = true) ||it.Class.startsWith(searchValue, ignoreCase = true) ||it.Deparment.startsWith(searchValue, ignoreCase = true)})
-        adapter = StudentAdapter(newAdapterData, this)
+        adapter = StudentAdapter(newAdapterData, context, applicationContext)
         layout.adapter = adapter
     }
 

@@ -32,11 +32,6 @@
         android:title="Sort By Deparments"
         />
     <item
-        android:id="@+id/removeMany"
-        android:title="Delete Students"
-
-        />
-    <item
         android:id="@+id/userManager"
         android:title="User Managerment"
         />

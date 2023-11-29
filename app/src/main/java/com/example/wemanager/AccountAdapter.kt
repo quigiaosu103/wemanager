@@ -35,6 +35,7 @@ class AccountAdapter(val mList: ArrayList<Account>, val context: Context): Recyc
             v->
             var intent = Intent(context, AccountView::class.java)
             intent.putExtra("username", item.UserName)
+            intent.putExtra("isView", false)
             context.startActivity(intent)
         }
     }
@@ -91,6 +92,26 @@ class AccountAdapter(val mList: ArrayList<Account>, val context: Context): Recyc
                 v->
             dialog.cancel()
         }
+//        var builder: AlertDialog.Builder = AlertDialog.Builder(context)
+//        builder.setMessage("Confirm Delete Students")
+//            .setTitle("Alert")
+//            .setPositiveButton("DELETE") {
+//                    dialog, which ->
+//                var dataHandler = DataHandler()
+//                dataHandler.removeAccount(username)
+//                mList = ArrayList(mList.filter { it.UserName!= username })
+//                notifyDataSetChanged()
+//            }
+//            .setNegativeButton("CANCLE") {
+//                    dialog, which ->
+//            }
+//        val dialog: AlertDialog = builder.create()
+//        dialog.show()
+//
+//        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
+//                v->
+//            dialog.cancel()
+//        }
     }
 
 

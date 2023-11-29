@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation("org.apache.commons:commons-csv:1.10.0")
     implementation("com.google.android.material:material:1.10.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.9")

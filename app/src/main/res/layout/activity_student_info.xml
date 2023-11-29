@@ -41,6 +41,8 @@
 
 
 
+
+
     </LinearLayout>
 
     <ScrollView
@@ -68,6 +70,30 @@
                     android:padding="20dp"
 
                     android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/edit_icon"
+                        android:id="@+id/btnEditStudent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:background="#fff"
+
+                        />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/baseline_save_24"
+                        android:id="@+id/btnSaveSt"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:background="#fff"
+
+                        />
+
+
                     <ImageView
                         android:id="@+id/imgAvatar"
                         android:layout_width="56dp"
@@ -187,6 +213,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="12dp"
                             android:hint="Age..."
+                            android:inputType="number"
                             android:textColor="#4FB0F7"
                             android:background="#fff"/>
 
@@ -206,6 +233,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="12dp"
                             android:hint="Total creadits..."
+                            android:inputType="number"
                             android:textColor="#4FB0F7"
                             android:background="#fff"/>
 
